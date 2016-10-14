@@ -4,7 +4,7 @@
     "type": "library",
     "description": "This Doctrine2 nested set extension.",
     "autoload": {
-        "psr-0": {
+        "psr-4": {
             "DoctrineExtensions\\NestedSet\\": "lib/",
             "DoctrineExtensions\\NestedSet\\Tests\\": "tests/"
         }
