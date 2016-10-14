@@ -1,0 +1,6 @@
+default:
+    failure: average.maintainabilityIndex < 50 or sum.loc > 10000
+
+    path:
+        directory: opendomainregistry
+        extensions: php

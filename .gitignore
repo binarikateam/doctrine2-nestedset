@@ -1,0 +1,11 @@
+.idea
+
+vendor/
+temporary/
+build/
+
+tests/phpunit.xml
+tests/DoctrineExtensions/NestedSet/Proxies/
+
+composer.lock
+composer.phar

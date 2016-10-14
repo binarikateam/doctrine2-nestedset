@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+
+<ruleset name="tmvNestedSet" xmlns="http://pmd.sf.net/ruleset/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0 http://pmd.sf.net/ruleset_xml_schema.xsd" xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd">
+    <description>Doctrine 2 NestedSet MD ruleset</description>
+
+    <rule ref="rulesets/codesize.xml/CyclomaticComplexity">
+        <properties>
+            <property name="reportLevel" value="20" />
+        </properties>
+    </rule>
+
+    <rule ref="rulesets/codesize.xml/NPathComplexity">
+        <properties>
+            <property name="minimum" value="550" />
+        </properties>
+    </rule>
+
+    <rule ref="rulesets/codesize.xml/ExcessiveClassComplexity">
+        <properties>
+            <property name="maximum" value="100" />
+        </properties>
+    </rule>
+
+    <rule ref="rulesets/codesize.xml/ExcessiveClassLength" />
+
+    <rule ref="rulesets/codesize.xml/ExcessiveMethodLength">
+        <properties>
+            <property name="minimum" value="150" />
+        </properties>
+    </rule>
+
+    <rule ref="rulesets/codesize.xml/ExcessiveParameterList" />
+
+    <rule ref="rulesets/controversial.xml/CamelCaseMethodName">
+        <priority>5</priority>
+
+        <properties>
+            <property name="allow-underscore" value="true" />
+        </properties>
+    </rule>
+
+    <rule ref="rulesets/controversial.xml/CamelCasePropertyName">
+        <priority>5</priority>
+
+        <properties>
+            <property name="allow-underscore" value="true" />
+        </properties>
+    </rule>
+
+    <rule ref="rulesets/controversial.xml/CamelCaseParameterName" />
+    <rule ref="rulesets/controversial.xml/CamelCaseVariableName" />
+
+    <rule ref="rulesets/design.xml/EvalExpression" />
+    <rule ref="rulesets/design.xml/ExitExpression" />
+    <rule ref="rulesets/design.xml/GotoStatement" />
+
+    <rule ref="rulesets/naming.xml/ConstructorWithNameAsEnclosingClass" />
+
+    <rule ref="rulesets/unusedcode.xml/UnusedFormalParameter" />
+    <rule ref="rulesets/unusedcode.xml/UnusedLocalVariable" />
+    <rule ref="rulesets/unusedcode.xml/UnusedPrivateField" />
+    <rule ref="rulesets/unusedcode.xml/UnusedPrivateMethod" />
+</ruleset>
