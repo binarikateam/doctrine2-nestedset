@@ -5,8 +5,8 @@
     "description": "This Doctrine2 nested set extension.",
     "autoload": {
         "psr-4": {
-            "DoctrineExtensions\\NestedSet\\": "lib/",
-            "DoctrineExtensions\\NestedSet\\Tests\\": "tests/"
+            "DoctrineExtensions\\NestedSet\\": "lib/DoctrineExtensions/NestedSet",
+            "DoctrineExtensions\\NestedSet\\Tests\\": "tests/DoctrineExtensions/NestedSet/Tests"
         }
     },
     "require": {
