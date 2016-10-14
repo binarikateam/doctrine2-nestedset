@@ -1,5 +1,5 @@
 {
-    "name": "nlzet/doctrine2-nestedset",
+    "name": "rosapp/doctrine2-nestedset",
     "license": "LGPL",
     "type": "library",
     "description": "This Doctrine2 nested set extension.",
