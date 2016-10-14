@@ -2,6 +2,7 @@
     "name": "rosapp/doctrine2-nestedset",
     "license": "LGPL",
     "type": "library",
+    "version": "1.2",
     "description": "This Doctrine2 nested set extension.",
     "autoload": {
         "psr-4": {
