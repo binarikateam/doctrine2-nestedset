@@ -862,9 +862,11 @@ class NodeWrapper implements Node
 
         try {
             if ($this->hasManyRoots() && $this->getRootValue() !== $node->getRootValue()) {
+                // Move between trees
                 $this->moveBetweenTrees($node, $node->getRightValue(), __FUNCTION__);
             } else {
-                $this->updateNode($node->getRightValue());
+                // Move within tree
+                $this->updateNode($node->getRightValue(), $node->getLevelValue() + 1 - $this->getLevelValue());
             }
 
             $em->flush();
@@ -1104,7 +1106,7 @@ class NodeWrapper implements Node
      *
      * @param int $destLeft
      */
-    protected function updateNode($destLeft)
+    protected function updateNode($destLeft, $levelDiff = null)
     {
         $left  = $this->getLeftValue();
         $right = $this->getRightValue();
@@ -1119,6 +1121,25 @@ class NodeWrapper implements Node
             // src was shifted too
             $left  += $treeSize;
             $right += $treeSize;
+        }
+
+        // update level for descendants
+        if ($levelDiff !== null) {
+            $em = $this->getManager()->getEntityManager();
+            $qb = $em->createQueryBuilder()
+                ->update(get_class($this->getNode()), 'n')
+                ->set("n.{$this->getLevelFieldName()}", "n.{$this->getLevelFieldName()} + ?1")
+                ->setParameter(1, $levelDiff)
+                ->andWhere("n.{$this->getLeftFieldName()} >= ?2")
+                ->setParameter(2, $left)
+                ->andWhere("n.{$this->getRightFieldName()} <= ?3")
+                ->setParameter(3, $right);
+            if ($this->hasManyRoots()) {
+                $qb
+                    ->andWhere("n.{$this->getRootFieldName()} = ?4")
+                    ->setParameter(4, $root);
+            }
+            $qb->getQuery()->execute();
         }
 
         // Now there's enough room next to target to move the subtree
@@ -1199,7 +1220,7 @@ class NodeWrapper implements Node
         $lftField   = $this->getLeftFieldName();
         $rgtField   = $this->getRightFieldName();
         $rootField  = $this->getRootFieldName();
-        $levelField = $this->getLeftFieldName();
+        $levelField = $this->getLevelFieldName();
 
         $newRoot  = $node->getRootValue();
         $oldRoot  = $this->getRootValue();
@@ -1214,12 +1235,13 @@ class NodeWrapper implements Node
         $this->setLeftValue($newLeftValue);
         $this->setRightValue($newLeftValue + ($oldRgt - $oldLft));
         $this->setRootValue($newRoot);
-
+        $this->setLevelValue($newLevel);
         $em->persist($this->getNode());
         $em->flush();
 
         // Relocate descendants of the node
         $diff = $this->getLeftValue() - $oldLft;
+        $levelDiff = $newLevel - $this->getLevelValue();
 
         $qb = $em->createQueryBuilder()
             ->update(get_class($this->getNode()), 'n')
@@ -1235,8 +1257,8 @@ class NodeWrapper implements Node
             ->setParameter(5, $oldRgt)
             ->andWhere("n.{$rootField} = ?6")
             ->setParameter(6, $oldRoot)
-            ->set("n.{$levelField}", '?7')
-            ->setParameter(7, $newLevel);
+            ->set("n.{$levelField}", "n.{$levelField} + ?7")
+            ->setParameter(7, $levelDiff);
 
         $qb->getQuery()->execute();
         $this->getManager()->updateValues($oldLft, $oldRgt, $diff, $oldRoot, $newRoot);
